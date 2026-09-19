@@ -30,7 +30,6 @@
                 Đã có <span id="soLuongDangKy" class="text-red-600 font-bold text-xl">...</span> người xác nhận tham gia
             </p>
 
-            <!-- THANH CHẠY NGANG LIÊN TỤC VỚI THỨ TỰ XÁO TRỘN NGẪU NHIÊN -->
             <div class="mb-6 bg-blue-50 border border-blue-200 rounded p-2 overflow-hidden shadow-inner">
                 <div class="text-xs text-[#003b7e] font-bold mb-1 uppercase tracking-wider text-center">Danh sách cán bộ nhân viên đã đăng ký:</div>
                 <marquee behavior="scroll" direction="left" scrollamount="5" class="text-sm font-bold text-red-600" id="marqueeNames">
@@ -45,24 +44,20 @@
                 </div>
 
                 <div>
-                    <label class="block font-bold text-[#003b7e] mb-1 text-lg">Showroom <span class="text-red-600">*</span></label>
-                    <select id="showroom" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
-                        <option value="">-- Chọn Showroom --</option>
-                        <option value="Bắc Giang">Bắc Giang</option>
-                        <option value="Võ Cường">Võ Cường</option>
-                        <option value="Lạng Sơn">Lạng Sơn</option>
-                    </select>
-                </div>
-
-                <div>
                     <label class="block font-bold text-[#003b7e] mb-1 text-lg">Mã số nhân viên <span class="text-red-600">*</span></label>
-                    <input type="text" id="masonhanvien" placeholder="Nhập mã, tên sẽ tự động điền" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
+                    <input type="text" id="masonhanvien" placeholder="Nhập mã nhân viên của bạn..." class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
                     <p id="loiMSNV" class="text-red-500 text-sm mt-1 hidden">Không tìm thấy nhân sự với mã này!</p>
                 </div>
 
                 <div>
+                    <label class="block font-bold text-[#003b7e] mb-1 text-lg">Showroom <span class="text-red-600">*</span></label>
+                    <!-- Showroom tự động điền theo mã nhân viên, nhưng nếu muốn hiện tùy chọn thì ô này ở chế độ readonly -->
+                    <input type="text" id="showroom" placeholder="Tự động hiển thị theo mã nhân viên" class="w-full p-2 border border-gray-300 rounded bg-gray-200 text-gray-700 font-bold focus:outline-none cursor-not-allowed" readonly required>
+                </div>
+
+                <div>
                     <label class="block font-bold text-[#003b7e] mb-1 text-lg">Họ tên <span class="text-red-600">*</span></label>
-                    <input type="text" id="hoten" placeholder="Đang tải dữ liệu nhân sự..." class="w-full p-2 border border-gray-300 rounded bg-gray-200 text-gray-700 font-bold focus:outline-none cursor-not-allowed" readonly required>
+                    <input type="text" id="hoten" placeholder="Tự động hiển thị theo mã nhân viên" class="w-full p-2 border border-gray-300 rounded bg-gray-200 text-gray-700 font-bold focus:outline-none cursor-not-allowed" readonly required>
                 </div>
 
                 <div>
@@ -120,7 +115,6 @@
         
         let danhSachNhanVien = {}; 
 
-        // Hàm xáo trộn mảng ngẫu nhiên (Fisher-Yates Shuffle)
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -136,10 +130,10 @@
                 if (data.status === 'success') {
                     document.getElementById('soLuongDangKy').innerText = data.count;
                     danhSachNhanVien = data.employees; 
-                    document.getElementById('hoten').placeholder = 'Tên sẽ tự động hiển thị'; 
+                    
+                    document.getElementById('masonhanvien').placeholder = 'Nhập mã nhân viên của bạn...'; 
 
                     if (data.names && data.names.length > 0) {
-                        // Xáo trộn danh sách tên trước khi đưa vào thanh chạy ngang
                         let shuffledNames = shuffleArray([...data.names]);
                         document.getElementById('marqueeNames').innerText = shuffledNames.join('  ♦  ');
                     } else {
@@ -147,12 +141,10 @@
                     }
                 } else {
                     document.getElementById('soLuongDangKy').innerText = '0';
-                    document.getElementById('hoten').placeholder = 'Lỗi tải dữ liệu. Hãy tải lại trang (F5).';
                 }
             })
             .catch(error => {
                 document.getElementById('soLuongDangKy').innerText = '?';
-                document.getElementById('hoten').placeholder = 'Mất kết nối. Hãy tải lại trang (F5).';
             });
         }
 
@@ -161,22 +153,26 @@
         document.getElementById('masonhanvien').addEventListener('input', function(e) {
             const msnv = e.target.value.trim();
             const hotenInput = document.getElementById('hoten');
+            const showroomInput = document.getElementById('showroom');
             const canhBaoLoi = document.getElementById('loiMSNV');
             const submitBtn = document.getElementById('submitBtn');
 
             if (msnv === "") {
                 hotenInput.value = "";
+                showroomInput.value = "";
                 canhBaoLoi.classList.add('hidden');
                 submitBtn.disabled = false;
                 return;
             }
 
             if (danhSachNhanVien[msnv]) {
-                hotenInput.value = danhSachNhanVien[msnv]; 
+                hotenInput.value = danhSachNhanVien[msnv].name;         
+                showroomInput.value = danhSachNhanVien[msnv].showroom; 
                 canhBaoLoi.classList.add('hidden'); 
                 submitBtn.disabled = false; 
             } else {
                 hotenInput.value = ""; 
+                showroomInput.value = ""; 
                 canhBaoLoi.classList.remove('hidden'); 
                 submitBtn.disabled = true; 
             }
