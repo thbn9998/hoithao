@@ -30,7 +30,7 @@
                 Đã có <span id="soLuongDangKy" class="text-red-600 font-bold text-xl">...</span> người xác nhận tham gia
             </p>
 
-            <!-- THANH CHẠY NGANG LIÊN TỤC -->
+            <!-- THANH CHẠY NGANG LIÊN TỤC VỚI THỨ TỰ XÁO TRỘN NGẪU NHIÊN -->
             <div class="mb-6 bg-blue-50 border border-blue-200 rounded p-2 overflow-hidden shadow-inner">
                 <div class="text-xs text-[#003b7e] font-bold mb-1 uppercase tracking-wider text-center">Danh sách cán bộ nhân viên đã đăng ký:</div>
                 <marquee behavior="scroll" direction="left" scrollamount="5" class="text-sm font-bold text-red-600" id="marqueeNames">
@@ -120,6 +120,15 @@
         
         let danhSachNhanVien = {}; 
 
+        // Hàm xáo trộn mảng ngẫu nhiên (Fisher-Yates Shuffle)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
         function loadInitialData() {
             fetch(WEB_APP_URL)
             .then(response => response.json())
@@ -129,9 +138,10 @@
                     danhSachNhanVien = data.employees; 
                     document.getElementById('hoten').placeholder = 'Tên sẽ tự động hiển thị'; 
 
-                    // Nối các tên lại với khoảng cách để chạy ngang liên tục
                     if (data.names && data.names.length > 0) {
-                        document.getElementById('marqueeNames').innerText = data.names.join('  ♦  ');
+                        // Xáo trộn danh sách tên trước khi đưa vào thanh chạy ngang
+                        let shuffledNames = shuffleArray([...data.names]);
+                        document.getElementById('marqueeNames').innerText = shuffledNames.join('  ♦  ');
                     } else {
                         document.getElementById('marqueeNames').innerText = 'Chưa có ai đăng ký.';
                     }
