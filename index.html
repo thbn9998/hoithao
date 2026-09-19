@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tham gia Hội thao THACO AUTO 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="max-w-6xl mx-auto p-4 md:p-8 flex flex-col md:flex-row gap-8 mt-10 bg-white shadow-xl rounded-lg">
+        
+        <!-- Cột trái -->
+        <div class="w-full md:w-1/2 text-center">
+            <h1 class="text-2xl font-bold text-[#003b7e] uppercase mb-4">
+                THACO AUTO BẮC NINH <br>
+                HỘI THAO NĂM 2026
+            </h1>
+            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Kính chào Quý Anh/Chị đăng ký tham gia Hội thao năm 2026 do THACO AUTO Bắc Ninh tổ chức</p>
+            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Thời gian dự kiến: <span class="text-red-600">Thứ 7, ngày 7 tháng 11 năm 2026</span></p>
+            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Địa điểm dự kiến: <a href="https://maps.app.goo.gl/5VeG7qexamckTCGH6" target="_blank" class="text-red-600 underline hover:text-red-800">Link map</a></p>
+            <p class="text-[17px] font-bold text-[#003b7e] mb-6">Quý Anh/Chị đăng ký thông tin để chương trình diễn ra thành công nhé!</p>
+            
+            <img src="bang-size1.jpg" alt="Bảng size áo và Thư mời" class="w-full border rounded mx-auto">
+        </div>
+
+        <!-- Cột phải: Form đăng ký -->
+        <div class="w-full md:w-1/2 flex flex-col justify-center">
+            <h2 class="text-2xl font-bold text-[#003b7e] uppercase mb-1 text-center">ĐĂNG KÝ THAM GIA</h2>
+            
+            <!-- HIỂN THỊ SỐ LƯỢNG ĐÃ ĐĂNG KÝ -->
+            <p class="text-center text-gray-600 font-medium mb-6">
+                Đã có <span id="soLuongDangKy" class="text-red-600 font-bold text-xl">...</span> người xác nhận tham gia
+            </p>
+            
+            <form id="registerForm" class="space-y-4">
+                
+                <div class="flex items-center mb-4 p-3 bg-gray-50 border border-gray-200 rounded-md">
+                    <input type="checkbox" id="xacnhan" class="w-7 h-7 text-[#003b7e] bg-white border-gray-400 rounded-full focus:ring-[#003b7e] cursor-pointer" required>
+                    <label for="xacnhan" class="ml-3 text-[22px] font-bold uppercase text-[#003b7e] cursor-pointer">Xác nhận tham gia <span class="text-red-600">*</span></label>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-[#003b7e] mb-1 text-lg">Showroom <span class="text-red-600">*</span></label>
+                    <select id="showroom" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
+                        <option value="">-- Chọn Showroom --</option>
+                        <option value="Bắc Giang">Bắc Giang</option>
+                        <option value="Võ Cường">Võ Cường</option>
+                        <option value="Lạng Sơn">Lạng Sơn</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-[#003b7e] mb-1 text-lg">Mã số nhân viên <span class="text-red-600">*</span></label>
+                    <input type="text" id="masonhanvien" placeholder="VD: 123456" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-[#003b7e] mb-1 text-lg">Họ tên <span class="text-red-600">*</span></label>
+                    <input type="text" id="hoten" placeholder="Nhập họ và tên" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-[#003b7e] mb-1 text-lg">Giới tính <span class="text-red-600">*</span></label>
+                    <select id="gioitinh" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
+                        <option value="">-- Chọn Giới tính --</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-[#003b7e] mb-1 text-lg">Size áo <span class="text-red-600">*</span></label>
+                    <select id="size" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
+                        <option value="">-- Chọn Size áo --</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                        <option value="3XL">3XL</option>
+                        <option value="4XL">4XL</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-[#003b7e] text-white font-bold py-3 px-4 rounded hover:bg-blue-900 transition duration-300 mt-4">
+                    GỬI ĐĂNG KÝ
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hộp thoại thông báo -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+        <div class="bg-white p-6 rounded-lg shadow-2xl max-w-md w-full">
+            <div class="text-green-600 text-5xl text-center mb-2">✔</div>
+            <h3 class="text-2xl font-bold text-[#003b7e] mb-2 text-center">Đăng ký thành công!</h3>
+            
+            <p id="thankYouMessage" class="text-gray-700 mb-4 text-center font-medium"></p>
+            
+            <div class="bg-gray-50 p-4 rounded border border-gray-200 mb-6 space-y-3 text-[15px]">
+                <div class="flex justify-between border-b pb-1"><span class="font-semibold text-gray-600">Trạng thái:</span> <span id="res-xacnhan" class="font-bold text-red-600 text-right"></span></div>
+                <div class="flex justify-between border-b pb-1"><span class="font-semibold text-gray-600">Họ tên:</span> <span id="res-hoten" class="font-bold text-[#003b7e] text-right"></span></div>
+                <div class="flex justify-between border-b pb-1"><span class="font-semibold text-gray-600">Mã NV:</span> <span id="res-manv" class="font-medium text-right"></span></div>
+                <div class="flex justify-between border-b pb-1"><span class="font-semibold text-gray-600">Showroom:</span> <span id="res-showroom" class="font-medium text-right"></span></div>
+                <div class="flex justify-between border-b pb-1"><span class="font-semibold text-gray-600">Giới tính:</span> <span id="res-gioitinh" class="font-medium text-right"></span></div>
+                <div class="flex justify-between"><span class="font-semibold text-gray-600">Size áo:</span> <span id="res-size" class="font-bold text-[#003b7e] text-right"></span></div>
+            </div>
+
+            <button onclick="closeModal()" class="w-full bg-[#003b7e] text-white px-4 py-3 rounded font-bold hover:bg-blue-900 transition">Xác nhận & Đóng</button>
+        </div>
+    </div>
+
+    <script>
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw6acJtYFl2ohVkCDI5ErmeJJNWI8sSrU1PZmiNyv3DyKqMaYR51BjnylTzLTa8U-ICgg/exec';
+
+        // Lấy số lượng người đăng ký khi vừa tải trang
+        function loadRegistrationCount() {
+            fetch(WEB_APP_URL)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('soLuongDangKy').innerText = data.count;
+                } else {
+                    document.getElementById('soLuongDangKy').innerText = '0';
+                }
+            })
+            .catch(error => {
+                document.getElementById('soLuongDangKy').innerText = '?';
+            });
+        }
+
+        // Chạy hàm đếm số lượng ngay khi trang web mở lên
+        window.onload = loadRegistrationCount;
+
+        // Xử lý gửi form
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = 'ĐANG XỬ LÝ...';
+            submitBtn.disabled = true;
+
+            const trangThaiXacNhan = document.getElementById('xacnhan').checked ? "Đã xác nhận" : "Chưa xác nhận";
+
+            const formData = {
+                showroom: document.getElementById('showroom').value,
+                masonhanvien: document.getElementById('masonhanvien').value,
+                hoten: document.getElementById('hoten').value,
+                gioitinh: document.getElementById('gioitinh').value,
+                size: document.getElementById('size').value,
+                xacnhan: trangThaiXacNhan
+            };
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    
+                    const danhXung = formData.gioitinh === 'Nam' ? 'Anh' : 'Chị';
+                    document.getElementById('thankYouMessage').innerText = `Cảm ơn ${danhXung} ${formData.hoten} đã đăng ký thông tin dưới đây:`;
+
+                    document.getElementById('res-xacnhan').innerText = formData.xacnhan;
+                    document.getElementById('res-hoten').innerText = formData.hoten;
+                    document.getElementById('res-manv').innerText = formData.masonhanvien;
+                    document.getElementById('res-showroom').innerText = formData.showroom;
+                    document.getElementById('res-gioitinh').innerText = formData.gioitinh;
+                    document.getElementById('res-size').innerText = formData.size;
+
+                    document.getElementById('successModal').classList.remove('hidden');
+                    document.getElementById('registerForm').reset();
+                    
+                    // Cập nhật lại số lượng ngay sau khi đăng ký thành công
+                    loadRegistrationCount();
+                } else {
+                    alert('Lỗi từ máy chủ: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Có lỗi xảy ra, vui lòng thử lại! Lỗi: ' + error.message);
+            })
+            .finally(() => {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        function closeModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
