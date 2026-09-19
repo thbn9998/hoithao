@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký tham gia Hội thao THACO AUTO 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Hiệu ứng mờ cho khung phóng to ảnh */
+        #imageModal {
+            transition: opacity 0.3s ease;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 font-sans">
     <div class="max-w-6xl mx-auto p-4 md:p-8 flex flex-col md:flex-row gap-8 mt-10 bg-white shadow-xl rounded-lg">
@@ -15,16 +21,21 @@
                 THACO AUTO BẮC NINH <br>
                 HỘI THAO NĂM 2026
             </h1>
-            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Kính chào Quý Anh/Chị đang đăng ký tham gia</p>
+            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Kính chào Quý Anh/Chị đăng ký tham gia</p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Hội thao năm 2026</p>
-            <p class="text-[17px] font-bold text-[#003b7e] mb-2"> do Công đoàn và Văn hóa - Truyền thông tổ chức</p>
-            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Thời gian dự kiến: <span class="text-red-600">Thứ 7, ngày 07/11/2026</span></p>
-            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Hạn đăng ký: <span class="text-red-600">23:59 ngày 23/09/2026</span></p>
+            <p class="text-[17px] font-bold text-[#003b7e] mb-2">do Công đoàn và Văn hóa - Truyền thông tổ chức</p>
+            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Thời gian dự kiến: <span class="text-red-600">Thứ 7, ngày 7 tháng 11 năm 2026</span></p>
+            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Hạn đăng ký: <span class="text-red-600">Đến hết 23:59 ngày 23/09/2026</span></p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Địa điểm dự kiến: <a href="https://maps.app.goo.gl/5VeG7qexamckTCGH6" target="_blank" class="text-red-600 underline hover:text-red-800">Link map</a></p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-4">Quý Anh/Chị đăng ký thông tin để chương trình diễn ra thành công nhé!</p>
             
-            <!-- Hình ảnh -->
-            <img src="bang-size.jpg" alt="Bảng size áo và Thư mời" class="w-full border rounded mx-auto shadow-sm mb-6">
+            <!-- Hình ảnh có thêm hiệu ứng rê chuột vào đổi con trỏ thành kính lúp -->
+            <div class="relative group cursor-pointer overflow-hidden rounded border border-gray-300 shadow-sm mb-6" onclick="openModal()">
+                <img src="bang-size1.jpg" alt="Bảng size áo và Thư mời" class="w-full transition duration-300 group-hover:scale-105">
+                <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center text-white font-bold text-sm">
+                    🔍 Click để phóng to ảnh
+                </div>
+            </div>
 
             <!-- KHUNG ĐỒNG HỒ ĐẾM NGƯỢC THỜI GIAN -->
             <div class="bg-blue-50 border-2 border-[#003b7e] rounded-lg p-4 shadow-inner">
@@ -123,7 +134,15 @@
         </div>
     </div>
 
-    <!-- Hộp thoại thông báo -->
+    <!-- HỒ SƠ PHÓNG TO ẢNH (MODAL) -->
+    <div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4" onclick="closeModalImg()">
+        <div class="relative max-w-4xl w-full text-center">
+            <span class="absolute -top-10 right-0 text-white text-3xl font-bold cursor-pointer hover:text-gray-300">&times; Đóng</span>
+            <img src="bang-size1.jpg" alt="Phóng to bảng size áo" class="max-h-[85vh] mx-auto rounded shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Hộp thoại thông báo gửi form thành công -->
     <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
         <div class="bg-white p-6 rounded-lg shadow-2xl max-w-md w-full">
             <div class="text-green-600 text-5xl text-center mb-2">✔</div>
@@ -148,6 +167,15 @@
         
         let danhSachNhanVien = {}; 
 
+        // Các hàm xử lý phóng to / thu nhỏ ảnh
+        function openModal() {
+            document.getElementById('imageModal').classList.remove('hidden');
+        }
+
+        function closeModalImg() {
+            document.getElementById('imageModal').classList.add('hidden');
+        }
+
         // HÀM ĐẾM NGƯỢC THỜI GIAN VÀ KHÓA KHI HẾT HẠN
         function updateCountdown() {
             const deadline = new Date('2026-09-23T23:59:59').getTime();
@@ -155,7 +183,6 @@
             const distance = deadline - now;
 
             if (distance < 0) {
-                // Hết hạn
                 document.getElementById('days').innerText = '00';
                 document.getElementById('hours').innerText = '00';
                 document.getElementById('minutes').innerText = '00';
@@ -179,7 +206,6 @@
             return false;
         }
 
-        // Chạy đồng hồ đếm ngược mỗi giây
         setInterval(updateCountdown, 1000);
 
         function shuffleArray(array) {
