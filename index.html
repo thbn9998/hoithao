@@ -9,7 +9,7 @@
 <body class="bg-gray-100 font-sans">
     <div class="max-w-6xl mx-auto p-4 md:p-8 flex flex-col md:flex-row gap-8 mt-10 bg-white shadow-xl rounded-lg">
         
-        <!-- Cột trái -->
+        <!-- Cột trái: Thông tin & Đồng hồ đếm ngược -->
         <div class="w-full md:w-1/2 text-center">
             <h1 class="text-2xl font-bold text-[#003b7e] uppercase mb-4">
                 THACO AUTO BẮC NINH <br>
@@ -19,11 +19,36 @@
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Thời gian dự kiến: <span class="text-red-600">Thứ 7, ngày 7 tháng 11 năm 2026</span></p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Hạn đăng ký: <span class="text-red-600">Đến hết 23:59 ngày 23/09/2026</span></p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Địa điểm dự kiến: <a href="https://maps.app.goo.gl/5VeG7qexamckTCGH6" target="_blank" class="text-red-600 underline hover:text-red-800">Link map</a></p>
-            <p class="text-[17px] font-bold text-[#003b7e] mb-6">Quý Anh/Chị đăng ký thông tin để chương trình diễn ra thành công nhé!</p>
-            <img src="bang-size1.jpg" alt="Bảng size áo và Thư mời" class="w-full border rounded mx-auto shadow-sm">
+            <p class="text-[17px] font-bold text-[#003b7e] mb-4">Quý Anh/Chị đăng ký thông tin để chương trình diễn ra thành công nhé!</p>
+            
+            <!-- Hình ảnh -->
+            <img src="bang-size1.jpg" alt="Bảng size áo và Thư mời" class="w-full border rounded mx-auto shadow-sm mb-6">
+
+            <!-- KHUNG ĐỒNG HỒ ĐẾM NGƯỢC THỜI GIAN -->
+            <div class="bg-blue-50 border-2 border-[#003b7e] rounded-lg p-4 shadow-inner">
+                <p class="text-sm font-bold text-[#003b7e] uppercase mb-2 tracking-wide">⏳ Thời gian đăng ký còn lại:</p>
+                <div class="grid grid-cols-4 gap-2 text-center">
+                    <div class="bg-white p-2 rounded shadow border border-blue-100">
+                        <span id="days" class="text-2xl font-black text-red-600 block">00</span>
+                        <span class="text-xs font-semibold text-gray-600 uppercase">Ngày</span>
+                    </div>
+                    <div class="bg-white p-2 rounded shadow border border-blue-100">
+                        <span id="hours" class="text-2xl font-black text-red-600 block">00</span>
+                        <span class="text-xs font-semibold text-gray-600 uppercase">Giờ</span>
+                    </div>
+                    <div class="bg-white p-2 rounded shadow border border-blue-100">
+                        <span id="minutes" class="text-2xl font-black text-red-600 block">00</span>
+                        <span class="text-xs font-semibold text-gray-600 uppercase">Phút</span>
+                    </div>
+                    <div class="bg-white p-2 rounded shadow border border-blue-100">
+                        <span id="seconds" class="text-2xl font-black text-red-600 block">00</span>
+                        <span class="text-xs font-semibold text-gray-600 uppercase">Giây</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Cột phải -->
+        <!-- Cột phải: Form đăng ký -->
         <div class="w-full md:w-1/2 flex flex-col justify-center">
             <h2 class="text-2xl font-bold text-[#003b7e] uppercase mb-1 text-center">ĐĂNG KÝ THAM GIA</h2>
             
@@ -121,19 +146,39 @@
         
         let danhSachNhanVien = {}; 
 
-        // KIỂM TRA THỜI GIAN HẠN CHÓT (23:59 ngày 23/09/2026)
-        function checkDeadline() {
-            const deadline = new Date('2026-09-23T23:59:59');
-            const now = new Date();
+        // HÀM ĐẾM NGƯỢC THỜI GIAN VÀ KHÓA KHI HẾT HẠN
+        function updateCountdown() {
+            const deadline = new Date('2026-09-23T23:59:59').getTime();
+            const now = new Date().getTime();
+            const distance = deadline - now;
 
-            if (now > deadline) {
-                // Nếu đã quá hạn: Ẩn form đi, hiện thông báo hết hạn
+            if (distance < 0) {
+                // Hết hạn
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+
                 document.getElementById('registerForm').classList.add('hidden');
                 document.getElementById('expiredNotice').classList.remove('hidden');
                 return true;
             }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            
             return false;
         }
+
+        // Chạy đồng hồ đếm ngược mỗi giây
+        setInterval(updateCountdown, 1000);
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -144,8 +189,7 @@
         }
 
         function loadInitialData() {
-            // Kiểm tra hạn chót trước tiên
-            if (checkDeadline()) return;
+            if (updateCountdown()) return;
 
             fetch(WEB_APP_URL)
             .then(response => response.json())
@@ -171,10 +215,13 @@
             });
         }
 
-        window.onload = loadInitialData;
+        window.onload = function() {
+            updateCountdown();
+            loadInitialData();
+        };
 
         document.getElementById('masonhanvien').addEventListener('input', function(e) {
-            if (checkDeadline()) return;
+            if (updateCountdown()) return;
 
             const msnv = e.target.value.trim();
             const hotenInput = document.getElementById('hoten');
@@ -206,7 +253,7 @@
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            if (checkDeadline()) {
+            if (updateCountdown()) {
                 alert('Đã hết thời gian đăng ký!');
                 return;
             }
