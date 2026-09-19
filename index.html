@@ -9,6 +9,7 @@
 <body class="bg-gray-100 font-sans">
     <div class="max-w-6xl mx-auto p-4 md:p-8 flex flex-col md:flex-row gap-8 mt-10 bg-white shadow-xl rounded-lg">
         
+        <!-- Cột trái -->
         <div class="w-full md:w-1/2 text-center">
             <h1 class="text-2xl font-bold text-[#003b7e] uppercase mb-4">
                 THACO AUTO BẮC NINH <br>
@@ -21,6 +22,7 @@
             <img src="bang-size1.jpg" alt="Bảng size áo và Thư mời" class="w-full border rounded mx-auto shadow-sm">
         </div>
 
+        <!-- Cột phải -->
         <div class="w-full md:w-1/2 flex flex-col justify-center">
             <h2 class="text-2xl font-bold text-[#003b7e] uppercase mb-1 text-center">ĐĂNG KÝ THAM GIA</h2>
             <p class="text-center text-gray-600 font-medium mb-6">
@@ -37,20 +39,23 @@
                     <label class="block font-bold text-[#003b7e] mb-1 text-lg">Showroom <span class="text-red-600">*</span></label>
                     <select id="showroom" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
                         <option value="">-- Chọn Showroom --</option>
+                        <option value="Bắc Ninh">Bắc Ninh</option>
                         <option value="Bắc Giang">Bắc Giang</option>
-                        <option value="Võ Cường">Võ Cường</option>
                         <option value="Lạng Sơn">Lạng Sơn</option>
                     </select>
                 </div>
 
                 <div>
                     <label class="block font-bold text-[#003b7e] mb-1 text-lg">Mã số nhân viên <span class="text-red-600">*</span></label>
-                    <input type="text" id="masonhanvien" placeholder="VD: 123456" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
+                    <!-- Chỗ nhập mã số nhân viên -->
+                    <input type="text" id="masonhanvien" placeholder="Nhập mã, tên sẽ tự động điền" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
+                    <p id="loiMSNV" class="text-red-500 text-sm mt-1 hidden">Không tìm thấy nhân sự với mã này!</p>
                 </div>
 
                 <div>
                     <label class="block font-bold text-[#003b7e] mb-1 text-lg">Họ tên <span class="text-red-600">*</span></label>
-                    <input type="text" id="hoten" placeholder="Nhập họ và tên" class="w-full p-2 border border-gray-400 rounded focus:ring-2 focus:ring-[#003b7e]" required>
+                    <!-- Ô Họ tên bị làm mờ, không cho nhập (readonly), đổi màu xám -->
+                    <input type="text" id="hoten" placeholder="Đang tải dữ liệu nhân sự..." class="w-full p-2 border border-gray-300 rounded bg-gray-200 text-gray-700 font-bold focus:outline-none cursor-not-allowed" readonly required>
                 </div>
 
                 <div>
@@ -76,7 +81,7 @@
                     </select>
                 </div>
 
-                <button type="submit" id="submitBtn" class="w-full bg-[#003b7e] text-white font-bold py-3 px-4 rounded hover:bg-blue-900 transition duration-300 mt-4 shadow-md">
+                <button type="submit" id="submitBtn" class="w-full bg-[#003b7e] text-white font-bold py-3 px-4 rounded hover:bg-blue-900 transition duration-300 mt-4 shadow-md disabled:bg-gray-400">
                     GỬI ĐĂNG KÝ
                 </button>
             </form>
@@ -87,9 +92,7 @@
     <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
         <div class="bg-white p-6 rounded-lg shadow-2xl max-w-md w-full">
             <div class="text-green-600 text-5xl text-center mb-2">✔</div>
-            <!-- Chữ này sẽ tự động thay đổi thành Đăng ký hoặc Cập nhật -->
             <h3 id="successTitle" class="text-2xl font-bold text-[#003b7e] mb-2 text-center">Đăng ký thành công!</h3>
-            
             <p id="thankYouMessage" class="text-gray-700 mb-4 text-center font-medium"></p>
             
             <div class="bg-gray-50 p-4 rounded border border-gray-200 mb-6 space-y-3 text-[15px]">
@@ -107,24 +110,58 @@
 
     <script>
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw6acJtYFl2ohVkCDI5ErmeJJNWI8sSrU1PZmiNyv3DyKqMaYR51BjnylTzLTa8U-ICgg/exec';
+        
+        let danhSachNhanVien = {}; // Biến lưu danh sách nhân sự tải từ Google Sheets
 
-        function loadRegistrationCount() {
+        // Tải dữ liệu ban đầu
+        function loadInitialData() {
             fetch(WEB_APP_URL)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
                     document.getElementById('soLuongDangKy').innerText = data.count;
+                    danhSachNhanVien = data.employees; // Lưu từ điển { "Mã": "Tên" }
+                    document.getElementById('hoten').placeholder = 'Tên sẽ tự động hiển thị'; // Đổi thông báo ô Họ tên
                 } else {
                     document.getElementById('soLuongDangKy').innerText = '0';
+                    document.getElementById('hoten').placeholder = 'Lỗi tải dữ liệu. Hãy tải lại trang (F5).';
                 }
             })
             .catch(error => {
                 document.getElementById('soLuongDangKy').innerText = '?';
+                document.getElementById('hoten').placeholder = 'Mất kết nối. Hãy tải lại trang (F5).';
             });
         }
 
-        window.onload = loadRegistrationCount;
+        window.onload = loadInitialData;
 
+        // BẮT SỰ KIỆN KHI NGƯỜI DÙNG GÕ MÃ SỐ NHÂN VIÊN
+        document.getElementById('masonhanvien').addEventListener('input', function(e) {
+            const msnv = e.target.value.trim();
+            const hotenInput = document.getElementById('hoten');
+            const canhBaoLoi = document.getElementById('loiMSNV');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (msnv === "") {
+                hotenInput.value = "";
+                canhBaoLoi.classList.add('hidden');
+                submitBtn.disabled = false;
+                return;
+            }
+
+            // Dò tìm tên trong danh sách đã tải
+            if (danhSachNhanVien[msnv]) {
+                hotenInput.value = danhSachNhanVien[msnv]; // Tự động điền tên
+                canhBaoLoi.classList.add('hidden'); // Ẩn cảnh báo
+                submitBtn.disabled = false; // Mở khóa nút gửi
+            } else {
+                hotenInput.value = ""; // Xóa tên đi nếu sai mã
+                canhBaoLoi.classList.remove('hidden'); // Hiện cảnh báo đỏ
+                submitBtn.disabled = true; // Khóa nút gửi nếu nhập sai mã
+            }
+        });
+
+        // Xử lý nút Submit gửi đi
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -153,12 +190,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                // XỬ LÝ CẢ TRƯỜNG HỢP MỚI (SUCCESS) VÀ CẬP NHẬT CŨ (UPDATED)
                 if(data.status === 'success' || data.status === 'updated') {
-                    
                     const danhXung = formData.gioitinh === 'Nam' ? 'Anh' : 'Chị';
-                    
-                    // Phân biệt tiêu đề thông báo
                     if (data.status === 'updated') {
                         document.getElementById('successTitle').innerText = 'Cập nhật thành công!';
                         document.getElementById('thankYouMessage').innerText = `Cảm ơn ${danhXung} ${formData.hoten} đã CẬP NHẬT lại thông tin dưới đây:`;
@@ -177,8 +210,8 @@
                     document.getElementById('successModal').classList.remove('hidden');
                     document.getElementById('registerForm').reset();
                     
-                    loadRegistrationCount();
-
+                    // Cập nhật lại số lượng bộ đếm và reset placeholder
+                    loadInitialData();
                 } else {
                     alert('Lỗi từ máy chủ: ' + data.message);
                 }
