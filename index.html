@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký tham gia Hội thao THACO AUTO 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Hiệu ứng chuyển động mượt mà cho danh sách random */
-        .fade-text {
-            transition: opacity 0.5s ease-in-out;
-        }
-    </style>
 </head>
 <body class="bg-gray-100 font-sans">
     <div class="max-w-6xl mx-auto p-4 md:p-8 flex flex-col md:flex-row gap-8 mt-10 bg-white shadow-xl rounded-lg">
@@ -36,12 +30,12 @@
                 Đã có <span id="soLuongDangKy" class="text-red-600 font-bold text-xl">...</span> người xác nhận tham gia
             </p>
 
-            <!-- KHUNG HIỂN THỊ TÊN RANDOM -->
-            <div class="mb-6 bg-blue-50 border border-blue-200 rounded p-3 text-center shadow-inner">
-                <div class="text-xs text-[#003b7e] font-bold mb-1 uppercase tracking-wider">Cán bộ nhân viên vừa đăng ký:</div>
-                <div id="randomNameBox" class="text-base font-bold text-red-600 h-7 flex items-center justify-center fade-text">
-                    Đang cập nhật danh sách...
-                </div>
+            <!-- THANH CHẠY NGANG LIÊN TỤC -->
+            <div class="mb-6 bg-blue-50 border border-blue-200 rounded p-2 overflow-hidden shadow-inner">
+                <div class="text-xs text-[#003b7e] font-bold mb-1 uppercase tracking-wider text-center">Danh sách cán bộ nhân viên đã đăng ký:</div>
+                <marquee behavior="scroll" direction="left" scrollamount="5" class="text-sm font-bold text-red-600" id="marqueeNames">
+                    Đang tải danh sách...
+                </marquee>
             </div>
             
             <form id="registerForm" class="space-y-4">
@@ -125,8 +119,6 @@
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw6acJtYFl2ohVkCDI5ErmeJJNWI8sSrU1PZmiNyv3DyKqMaYR51BjnylTzLTa8U-ICgg/exec';
         
         let danhSachNhanVien = {}; 
-        let globalNames = [];
-        let randomInterval = null;
 
         function loadInitialData() {
             fetch(WEB_APP_URL)
@@ -137,11 +129,11 @@
                     danhSachNhanVien = data.employees; 
                     document.getElementById('hoten').placeholder = 'Tên sẽ tự động hiển thị'; 
 
+                    // Nối các tên lại với khoảng cách để chạy ngang liên tục
                     if (data.names && data.names.length > 0) {
-                        globalNames = data.names;
-                        startRandomNames();
+                        document.getElementById('marqueeNames').innerText = data.names.join('  ♦  ');
                     } else {
-                        document.getElementById('randomNameBox').innerText = 'Chưa có ai đăng ký.';
+                        document.getElementById('marqueeNames').innerText = 'Chưa có ai đăng ký.';
                     }
                 } else {
                     document.getElementById('soLuongDangKy').innerText = '0';
@@ -152,33 +144,6 @@
                 document.getElementById('soLuongDangKy').innerText = '?';
                 document.getElementById('hoten').placeholder = 'Mất kết nối. Hãy tải lại trang (F5).';
             });
-        }
-
-        // Hàm chạy random tên liên tục mỗi 2.5 giây
-        function startRandomNames() {
-            const box = document.getElementById('randomNameBox');
-            if (globalNames.length === 0) return;
-
-            if (randomInterval) clearInterval(randomInterval);
-
-            // Hiển thị ngay 1 tên ngẫu nhiên đầu tiên
-            showRandomName();
-
-            // Cứ mỗi 2.5 giây đổi tên 1 lần với hiệu ứng mờ dần
-            randomInterval = setInterval(showRandomName, 2500);
-        }
-
-        function showRandomName() {
-            const box = document.getElementById('randomNameBox');
-            if (globalNames.length === 0) return;
-
-            box.style.opacity = '0'; // Làm mờ đi
-            setTimeout(() => {
-                // Chọn ngẫu nhiên 1 tên trong mảng
-                const randomIndex = Math.floor(Math.random() * globalNames.length);
-                box.innerText = globalNames[randomIndex];
-                box.style.opacity = '1'; // Hiện rõ tên mới
-            }, 300);
         }
 
         window.onload = loadInitialData;
