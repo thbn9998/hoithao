@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký tham gia Hội thao THACO AUTO 2026</title>
-    <!-- Nhúng Tailwind CSS để làm đẹp giao diện -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
     <div class="max-w-6xl mx-auto p-4 md:p-8 flex flex-col md:flex-row gap-8 mt-10 bg-white shadow-xl rounded-lg">
         
-        <!-- ================= CỘT TRÁI: THÔNG TIN SỰ KIỆN ================= -->
         <div class="w-full md:w-1/2 text-center">
             <h1 class="text-2xl font-bold text-[#003b7e] uppercase mb-4">
                 THACO AUTO BẮC NINH <br>
@@ -20,22 +18,16 @@
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Thời gian dự kiến: <span class="text-red-600">Thứ 7, ngày 7 tháng 11 năm 2026</span></p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Địa điểm dự kiến: <a href="https://maps.app.goo.gl/5VeG7qexamckTCGH6" target="_blank" class="text-red-600 underline hover:text-red-800">Link map</a></p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-6">Quý Anh/Chị đăng ký thông tin để chương trình diễn ra thành công nhé!</p>
-            
             <img src="bang-size1.jpg" alt="Bảng size áo và Thư mời" class="w-full border rounded mx-auto shadow-sm">
         </div>
 
-        <!-- ================= CỘT PHẢI: FORM ĐĂNG KÝ ================= -->
         <div class="w-full md:w-1/2 flex flex-col justify-center">
             <h2 class="text-2xl font-bold text-[#003b7e] uppercase mb-1 text-center">ĐĂNG KÝ THAM GIA</h2>
-            
-            <!-- Bộ đếm số lượng người đăng ký -->
             <p class="text-center text-gray-600 font-medium mb-6">
                 Đã có <span id="soLuongDangKy" class="text-red-600 font-bold text-xl">...</span> người xác nhận tham gia
             </p>
             
             <form id="registerForm" class="space-y-4">
-                
-                <!-- Nút tích Xác nhận tham gia dạng tròn, chữ xanh đậm -->
                 <div class="flex items-center mb-6 p-3 bg-gray-50 border border-gray-200 rounded-md">
                     <input type="checkbox" id="xacnhan" class="w-7 h-7 text-[#003b7e] bg-white border-gray-400 rounded-full focus:ring-[#003b7e] cursor-pointer" required>
                     <label for="xacnhan" class="ml-3 text-[22px] font-bold uppercase text-[#003b7e] cursor-pointer">Xác nhận tham gia <span class="text-red-600">*</span></label>
@@ -91,13 +83,13 @@
         </div>
     </div>
 
-    <!-- ================= HỘP THOẠI THÔNG BÁO THÀNH CÔNG ================= -->
+    <!-- Hộp thoại thông báo -->
     <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
         <div class="bg-white p-6 rounded-lg shadow-2xl max-w-md w-full">
             <div class="text-green-600 text-5xl text-center mb-2">✔</div>
-            <h3 class="text-2xl font-bold text-[#003b7e] mb-2 text-center">Đăng ký thành công!</h3>
+            <!-- Chữ này sẽ tự động thay đổi thành Đăng ký hoặc Cập nhật -->
+            <h3 id="successTitle" class="text-2xl font-bold text-[#003b7e] mb-2 text-center">Đăng ký thành công!</h3>
             
-            <!-- Chữ cảm ơn được tự động thay đổi Anh/Chị -->
             <p id="thankYouMessage" class="text-gray-700 mb-4 text-center font-medium"></p>
             
             <div class="bg-gray-50 p-4 rounded border border-gray-200 mb-6 space-y-3 text-[15px]">
@@ -113,12 +105,9 @@
         </div>
     </div>
 
-    <!-- ================= JAVASCRIPT XỬ LÝ DỮ LIỆU ================= -->
     <script>
-        // Link Google Apps Script của bạn
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw6acJtYFl2ohVkCDI5ErmeJJNWI8sSrU1PZmiNyv3DyKqMaYR51BjnylTzLTa8U-ICgg/exec';
 
-        // Hàm gọi API lấy số lượng đã đăng ký
         function loadRegistrationCount() {
             fetch(WEB_APP_URL)
             .then(response => response.json())
@@ -134,10 +123,8 @@
             });
         }
 
-        // Tự động đếm khi web vừa mở lên
         window.onload = loadRegistrationCount;
 
-        // Xử lý gửi Form
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -146,10 +133,8 @@
             submitBtn.innerText = 'ĐANG KIỂM TRA DỮ LIỆU...';
             submitBtn.disabled = true;
 
-            // Chuyển nút tích thành chữ lưu vào Sheets
             const trangThaiXacNhan = document.getElementById('xacnhan').checked ? "Đã xác nhận" : "Chưa xác nhận";
 
-            // Gom dữ liệu
             const formData = {
                 showroom: document.getElementById('showroom').value,
                 masonhanvien: document.getElementById('masonhanvien').value,
@@ -159,7 +144,6 @@
                 xacnhan: trangThaiXacNhan
             };
 
-            // Gửi dữ liệu đi
             fetch(WEB_APP_URL, {
                 method: 'POST',
                 headers: {
@@ -169,12 +153,20 @@
             })
             .then(response => response.json())
             .then(data => {
-                if(data.status === 'success') {
-                    // Đăng ký thành công: Tùy biến xưng hô
+                // XỬ LÝ CẢ TRƯỜNG HỢP MỚI (SUCCESS) VÀ CẬP NHẬT CŨ (UPDATED)
+                if(data.status === 'success' || data.status === 'updated') {
+                    
                     const danhXung = formData.gioitinh === 'Nam' ? 'Anh' : 'Chị';
-                    document.getElementById('thankYouMessage').innerText = `Cảm ơn ${danhXung} ${formData.hoten} đã đăng ký thông tin dưới đây:`;
+                    
+                    // Phân biệt tiêu đề thông báo
+                    if (data.status === 'updated') {
+                        document.getElementById('successTitle').innerText = 'Cập nhật thành công!';
+                        document.getElementById('thankYouMessage').innerText = `Cảm ơn ${danhXung} ${formData.hoten} đã CẬP NHẬT lại thông tin dưới đây:`;
+                    } else {
+                        document.getElementById('successTitle').innerText = 'Đăng ký thành công!';
+                        document.getElementById('thankYouMessage').innerText = `Cảm ơn ${danhXung} ${formData.hoten} đã đăng ký thông tin dưới đây:`;
+                    }
 
-                    // Đổ dữ liệu vào bảng tóm tắt
                     document.getElementById('res-xacnhan').innerText = formData.xacnhan;
                     document.getElementById('res-hoten').innerText = formData.hoten;
                     document.getElementById('res-manv').innerText = formData.masonhanvien;
@@ -182,18 +174,12 @@
                     document.getElementById('res-gioitinh').innerText = formData.gioitinh;
                     document.getElementById('res-size').innerText = formData.size;
 
-                    // Mở bảng thông báo thành công và làm mới form
                     document.getElementById('successModal').classList.remove('hidden');
                     document.getElementById('registerForm').reset();
                     
-                    // Cập nhật lại số lượng bộ đếm ngay lập tức
                     loadRegistrationCount();
 
-                } else if (data.status === 'duplicate') {
-                    // Bị trùng Mã số nhân viên
-                    alert('⚠️ THÔNG BÁO: ' + data.message);
                 } else {
-                    // Lỗi hệ thống khác
                     alert('Lỗi từ máy chủ: ' + data.message);
                 }
             })
@@ -201,13 +187,11 @@
                 alert('Có lỗi xảy ra hoặc mạng không ổn định, vui lòng thử lại! Lỗi: ' + error.message);
             })
             .finally(() => {
-                // Đưa nút GỬI ĐĂNG KÝ về trạng thái ban đầu
                 submitBtn.innerText = originalText;
                 submitBtn.disabled = false;
             });
         });
 
-        // Hàm tắt Hộp thoại thông báo
         function closeModal() {
             document.getElementById('successModal').classList.add('hidden');
         }
