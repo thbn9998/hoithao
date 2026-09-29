@@ -25,7 +25,7 @@
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Hội thao năm 2026</p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">do Công đoàn và Văn hóa - Truyền thông tổ chức</p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Thời gian dự kiến: <span class="text-red-600">Thứ 7, ngày 7 tháng 11 năm 2026</span></p>
-            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Hạn đăng ký: <span class="text-red-600">Đến hết 23:59 ngày 4/10/2026</span></p>
+            <p class="text-[17px] font-bold text-[#003b7e] mb-2">Hạn đăng ký: <span class="text-red-600">Đến hết 23:59 ngày 04/10/2026</span></p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-2">Địa điểm dự kiến: <a href="https://maps.app.goo.gl/5VeG7qexamckTCGH6" target="_blank" class="text-red-600 underline hover:text-red-800">Link map</a></p>
             <p class="text-[17px] font-bold text-[#003b7e] mb-4">Quý Anh/Chị đăng ký thông tin để chương trình diễn ra thành công nhé!</p>
             
@@ -79,7 +79,7 @@
             <!-- THÔNG BÁO HẾT HẠN (Ẩn mặc định) -->
             <div id="expiredNotice" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-6 rounded relative text-center mb-6">
                 <strong class="font-bold text-xl block mb-2">HÃY LƯU Ý: THỜI GIAN ĐĂNG KÝ ĐÃ KẾT THÚC!</strong>
-                <span class="block text-sm">Thời gian nhận đăng ký/chỉnh sửa đã đóng vào lúc 23:59 ngày 4/10/2026. Cảm ơn sự quan tâm của Anh/Chị!</span>
+                <span class="block text-sm">Thời gian nhận đăng ký/chỉnh sửa đã đóng vào lúc 23:59 ngày 04/10/2026. Cảm ơn sự quan tâm của Anh/Chị!</span>
             </div>
 
             <form id="registerForm" class="space-y-4">
@@ -178,7 +178,8 @@
 
         // HÀM ĐẾM NGƯỢC THỜI GIAN VÀ KHÓA KHI HẾT HẠN
         function updateCountdown() {
-            const deadline = new Date('2026-09-23T23:59:59').getTime();
+            // Thay đổi ngày kết thúc thành 04/10/2026
+            const deadline = new Date('2026-10-04T23:59:59').getTime();
             const now = new Date().getTime();
             const distance = deadline - now;
 
