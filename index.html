@@ -178,8 +178,8 @@
 
         // HÀM ĐẾM NGƯỢC THỜI GIAN VÀ KHÓA KHI HẾT HẠN
         function updateCountdown() {
-            // Thay đổi ngày kết thúc thành 04/10/2026
-            const deadline = new Date('2026-10-04T23:59:59').getTime();
+            // Thay đổi ngày kết thúc sử dụng định dạng dấu gạch chéo (/) để hỗ trợ mọi trình duyệt
+            const deadline = new Date('2026/10/04 23:59:59').getTime();
             const now = new Date().getTime();
             const distance = deadline - now;
 
@@ -203,6 +203,10 @@
             document.getElementById('hours').innerText = String(hours).padStart(2, '0');
             document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
             document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            
+            // Xóa ẩn form nếu đang trong thời gian mở
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('expiredNotice').classList.add('hidden');
             
             return false;
         }
